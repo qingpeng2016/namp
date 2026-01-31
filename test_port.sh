@@ -675,7 +675,7 @@ for PORT in "${PORTS[@]}"; do
     echo ""
 done
 
-# ========== 汇总检测到的协议，发送到 TG ==========
+# ========== 汇总检测到的协议，发送到 Lark ==========
 TG_MSG=""
 TG_HEADER="🔔 端口协议检测报警 $(date '+%Y-%m-%d %H:%M:%S')"
 TG_SEP="===================================="
@@ -756,7 +756,7 @@ for PORT in "${PORTS[@]}"; do
     fi
 done
 
-# 汇总：IP、内网IP（若有）、检测端口数、异常端口数（始终发到 TG）
+# 汇总：IP、内网IP（若有）、检测端口数、异常端口数（始终发到 Lark）
 TG_SUMMARY="IP: ${TARGET_IP}
 "
 [ -n "${INTERNAL_IP:-}" ] && TG_SUMMARY="${TG_SUMMARY}内网IP: ${INTERNAL_IP}
@@ -770,12 +770,12 @@ ${TG_HEADER}
 ${TG_SUMMARY}${TG_MSG}"
 
 echo "=========================================="
-echo "发送协议检测结果到 TG"
+echo "发送协议检测结果到 Lark"
 echo "=========================================="
-if [ -f "$SCRIPT_DIR/tg_alert.sh" ]; then
-    "$SCRIPT_DIR/tg_alert.sh" "$FULL_MSG" || echo "⚠️ TG 发送失败或未配置"
+if [ -f "$SCRIPT_DIR/lark_alert.sh" ]; then
+    "$SCRIPT_DIR/lark_alert.sh" "$FULL_MSG" || echo "⚠️ Lark 发送失败或未配置"
 else
-    echo "⚠️ 未找到 tg_alert.sh，跳过 TG 发送"
+    echo "⚠️ 未找到 lark_alert.sh，跳过 Lark 发送"
 fi
 echo ""
 
